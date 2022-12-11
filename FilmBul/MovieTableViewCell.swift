@@ -27,10 +27,14 @@ class MovieTableViewCell: UITableViewCell {
     func configure(with model: Movie) {
         self.movieTitleLabel.text = model.title
         self.movieYearLabel.text = model.year
-        
         let url = model.poster
-        if let data = try? Data(contentsOf: URL(string: url)!) {
-            self.moviePosterImageView.image = UIImage(data: data)
-        }
+        
+        URLSession.shared.dataTask(with: URL(string: url)!) { data, response, error in
+            guard let data = data, error == nil else { return }
+            
+            DispatchQueue.main.async {
+                self.moviePosterImageView.image = UIImage(data: data)
+            }
+        }.resume()
     }
 }

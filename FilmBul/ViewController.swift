@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet var textField: UITextField!
     
     var movies = [Movie]()
+    let networkController = NetworkController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,27 +29,20 @@ class ViewController: UIViewController {
     
     func searchMovies() {
         textField.resignFirstResponder()
-        
+
         guard let text = textField.text, !text.isEmpty else { return }
-        
+
         movies.removeAll()
         
         let query = text.replacingOccurrences(of: " ", with: "%20")
-        URLSession.shared.dataTask(with: URL(string: "https://www.omdbapi.com/?s=\(query)&apikey=86f9081f&type=movie")!) { data, response, error in
-            guard let data = data, error == nil else { return }
-            
-            var result: MovieResult?
-            let decoder = JSONDecoder()
-            result = try? decoder.decode(MovieResult.self, from: data)
-            guard let finalResult = result else { return }
-            
-            let newMovies = finalResult.search
-            self.movies.append(contentsOf: newMovies)
+        networkController.getData(query: query) { data in
+            let newMovies = data?.search
+            self.movies.append(contentsOf: newMovies ?? [])
             
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        }.resume()
+        }
     }
 }
 
