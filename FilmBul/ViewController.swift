@@ -10,10 +10,10 @@ import SafariServices
 
 class ViewController: UIViewController {
     
-    @IBOutlet var tableView: UITableView!
-    @IBOutlet var textField: UITextField!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var textField: UITextField!
     
-    var movies = [Movie]()
+    var movies: [Movie] = []
     let networkController = NetworkController()
     
     override func viewDidLoad() {
@@ -35,12 +35,12 @@ class ViewController: UIViewController {
         movies.removeAll()
         
         let query = text.replacingOccurrences(of: " ", with: "%20")
-        networkController.getData(query: query) { data in
+        networkController.getData(query: query) { [weak self] data in
             let newMovies = data?.search
-            self.movies.append(contentsOf: newMovies ?? [])
+            self?.movies.append(contentsOf: newMovies ?? [])
             
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self?.tableView.reloadData()
             }
         }
     }
@@ -63,7 +63,7 @@ extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let url = "https://www.imdb.com/title/\(movies[indexPath.row].imdbID)/"
+        let url = "https://www.imdb.com/title/\(movies[indexPath.row].imdbID!)/"
         let vc = SFSafariViewController(url: URL(string: url)!)
         present(vc, animated: true)
     }

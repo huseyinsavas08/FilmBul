@@ -9,9 +9,9 @@ import UIKit
 
 class MovieTableViewCell: UITableViewCell {
     
-    @IBOutlet var movieTitleLabel: UILabel!
-    @IBOutlet var movieYearLabel: UILabel!
-    @IBOutlet var moviePosterImageView: UIImageView!
+    @IBOutlet weak var movieTitleLabel: UILabel!
+    @IBOutlet weak var movieYearLabel: UILabel!
+    @IBOutlet weak var moviePosterImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,11 +25,11 @@ class MovieTableViewCell: UITableViewCell {
     }
     
     func configure(with model: Movie) {
-        self.movieTitleLabel.text = model.title
-        self.movieYearLabel.text = model.year
-        let url = model.poster
+        movieTitleLabel.text = model.title
+        movieYearLabel.text = model.year
+        guard let url = model.poster else { return }
         
-        URLSession.shared.dataTask(with: URL(string: url)!) { data, response, error in
+        URLSession.shared.dataTask(with: URL(string: url)!) { data, _, error in
             guard let data = data, error == nil else { return }
             
             DispatchQueue.main.async {

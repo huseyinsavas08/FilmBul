@@ -7,10 +7,10 @@
 
 import Foundation
 
-class NetworkController {
+final class NetworkController {
     
     func getData(query: String, completion: @escaping (MovieResult?) -> Void) {
-        URLSession.shared.dataTask(with: URL(string: "https://www.omdbapi.com/?s=\(query)&apikey=86f9081f&type=movie")!) { data, response, error in
+        URLSession.shared.dataTask(with: URL(string: "https://www.omdbapi.com/?s=\(query)&apikey=86f9081f&type=movie")!) { data, _, error in
             guard let data = data, error == nil else { return }
             
             var result: MovieResult?
