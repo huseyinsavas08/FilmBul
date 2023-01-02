@@ -2,7 +2,7 @@
 
 Filmleri ara, bul ve doğrudan ilgili sayfaya git.
   - iOS UIKit
-    -OMDb API
+    - OMDb API
     - URLSession
     - SafariServices
 
