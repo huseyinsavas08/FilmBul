@@ -1,6 +1,6 @@
 # FilmBul
 
-Filmleri ara, bul ve doğrudan ilgili sayfaya git.
+Film ara, bul ve web sayfasına git.
 
 - OMDb API
 - URLSession
